@@ -1,21 +1,38 @@
-from flask import Flask, render_template, request
+import streamlit as st
 from predict import predict_news
 
-app = Flask(__name__)
+st.set_page_config(page_title="Fake News Detection", layout="centered")
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+st.title("📰 Fake News Detection App")
+st.write("Enter a news article and check whether it's real or fake.")
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    input_text = request.form['news']
-    output = predict_news(input_text)
-    return render_template('index.html',
-                           prediction=output['result'],
-                           confidence=output['confidence'],
-                           articles=output['related_articles'],
-                           news=input_text)
+# Input text box
+news_input = st.text_area("📝 Paste the news article here:", height=250)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Predict button
+if st.button("🚀 Predict"):
+    if not news_input.strip():
+        st.warning("Please enter a news article to analyze.")
+    else:
+        # Call your prediction function
+        with st.spinner("Analyzing the article..."):
+            output = predict_news(news_input)
+
+        # Show result
+        if output['result'] == "Real News":
+            st.success("✅ The article appears to be **REAL NEWS**.")
+        else:
+            st.error("⚠️ The article appears to be **FAKE NEWS**.")
+
+        # Show confidence
+        st.markdown(f"**Model Confidence:** {output['confidence']}")
+
+        # Show related articles if result is Real News
+        if output['related_articles']:
+            st.markdown("### 🔍 Related Articles")
+            for url in output['related_articles']:
+                st.markdown(f"- [{url}]({url})")
+
+
+st.markdown("---")
+st.caption("Built with Streamlit · Fake News Detection using XGBoost")
