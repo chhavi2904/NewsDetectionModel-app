@@ -3,14 +3,14 @@ from predict import predict_news
 
 st.set_page_config(page_title="Fake News Detection", layout="centered")
 
-st.title("📰 Fake News Detection App")
+st.title(" Fake News Detection App")
 st.write("Enter a news article and check whether it's real or fake.")
 
 # Input text box
-news_input = st.text_area("📝 Paste the news article here:", height=250)
+news_input = st.text_area(" Paste the news article here:", height=250)
 
 # Predict button
-if st.button("🚀 Predict"):
+if st.button(" Predict"):
     if not news_input.strip():
         st.warning("Please enter a news article to analyze.")
     else:
