@@ -1,4 +1,4 @@
-Flask
+streamlit
 scikit-learn
 xgboost
 pandas
